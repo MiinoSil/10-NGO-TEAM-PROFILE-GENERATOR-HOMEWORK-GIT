@@ -1,6 +1,7 @@
 // Declare requirements, nodes, modules...
 const fs = require('fs');
 const inquirer = require('inquirer');
+const path = require('path');
 
 // link to generateHTML.js in 'src'
 const generateHTML = require('./src/generateHTML');
@@ -203,17 +204,17 @@ const addEmployee = () => {
     })
 };
 
-// // Use inquirer data to generateHTML
-// const writeFile = data => {
-//     fs.writeFile('./dist/index.html', data, err => {
-//         if (err) {
-//             console.log(err)
-//             return;
-//         } else {
-//             console.log("Team Profile generated, checkout the index.html in /dist folder")
-//         }
-//     })
-// };
+// Use inquirer data to generateHTML
+const writeToFile = data => {
+    fs.writeFile('./dist/index.html', generateHTML(team), 'utf-8', data, err => {
+        if (err) {
+            console.log(err)
+            return;
+        } else {
+            console.log("Team Profile generated, checkout the index.html in /dist folder")
+        }
+    })
+};
 
 // Inquirer init
 addManager()
@@ -221,7 +222,7 @@ addManager()
     .then(team => {
         return generateHTML(team)
     }).then(pageHTML => {
-        return writeFile(pageHTML)
+        return writeToFile(pageHTML)
     }).catch(err => {
         console.log(err)
     });
